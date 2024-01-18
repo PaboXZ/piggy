@@ -1,0 +1,12 @@
+{
+    "name": "pk/piggy",
+    "description": "Expenses tracking app",
+    "type": "project",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Framework\\": "src/Framework",
+            "app\\": "src/App"
+        }
+    }
+}
