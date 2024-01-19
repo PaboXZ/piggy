@@ -1,5 +1,7 @@
 <?php
 
+require '../src/App/functions.php';
+
 $app = require __DIR__ . '/../src/App/bootstrap.php';
 
-$app->status();
+$app->run();
