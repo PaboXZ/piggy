@@ -25,15 +25,15 @@ class Router {
     public function dispatch(string $path, string $method){
         $path = $this->normalizePath($path);
         $method = strtoupper($method);
-
         foreach($this->routes as $route){
             if($method !== $route['method'] || !preg_match("#^{$route['path']}$#", $path)){
                 continue;
             }
-        [$class, $function] = $route['controller'];
+            
+            [$class, $function] = $route['controller'];
 
-        $controllerInstance = new $class;
-        $controllerInstance->$function();
+            $controllerInstance = new $class;
+            $controllerInstance->$function();
         }
     }
 }
