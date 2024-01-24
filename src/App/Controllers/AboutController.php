@@ -9,10 +9,7 @@ use App\Config\Paths;
 
 class AboutController {
 
-    private TemplateEngine $templateEngine;
-
-    public function __construct() {
-        $this->templateEngine = new TemplateEngine(Paths::VIEW);
+    public function __construct(private TemplateEngine $templateEngine) {
     }
 
     public function about(){
