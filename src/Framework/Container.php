@@ -11,6 +11,7 @@ use Framework\Exceptions\ContainerException;
 class Container {
 
     private array $definitions = [];
+    private array $resolved = [];
 
     public function addDefinitions(array $newDefinitions){
         $this->definitions = [...$this->definitions, ...$newDefinitions];
@@ -47,17 +48,24 @@ class Container {
                 throw new ContainerException("Cannot instantiate class {$className}, invalid data type given to {$name} parameter");
 
             $depedencies[] = $this->get($type->getName());
-
-            return $reflectionClass->newInstanceArgs($depedencies);
         }
+
+        return $reflectionClass->newInstanceArgs($depedencies);
+
     }
 
     private function get($id){
         if(!array_key_exists($id, $this->definitions))
             throw new ContainerException("Class {$id} does not exists in container definitions");
 
+        if(array_key_exists($id, $this->resolved))
+            return $this->resolved[$id];
+
         $factory = $this->definitions[$id];
+
         $dependency = $factory();
+
+        $this->resolved[$id] = $dependency;
 
         return $dependency;
     }

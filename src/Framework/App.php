@@ -32,4 +32,8 @@ class App {
         $method = $_SERVER['REQUEST_METHOD'];
         $this->router->dispatch($path, $method, $this->container);
     }
+
+    public function addMiddleware(string $middleware){
+        $this->router->addMiddleware($middleware);
+    }
 }
