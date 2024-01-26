@@ -17,7 +17,6 @@ class TemplateEngine{
     public function render(string $template, array $data = []){
         extract($data, EXTR_SKIP);
         extract($this->globalTemplateData, EXTR_SKIP);
-
         ob_start();
 
         include $this->resolve($template);
