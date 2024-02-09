@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Framework;
 
-use PDO, PDOException;
+use PDO, PDOException, PDOStatement;
 
 /*
 * Database connection class.
@@ -21,6 +21,7 @@ use PDO, PDOException;
 class Database {
 
     private PDO $connection;
+    private PDOStatement $statement;
 
     public function __construct(string $driver, array $config, string $username = 'root', string $password = '') {
 
@@ -38,7 +39,14 @@ class Database {
         
     }
 
-    public function query(string $query){
-        $this->connection->query($query);
+    public function query(string $query, array $params = []){
+        $this->statement = $this->connection->prepare($query);
+
+        $this->statement->execute($params);
+        return $this;
+    }
+
+    public function count(){
+        return $this->statement->fetchColumn();
     }
 }

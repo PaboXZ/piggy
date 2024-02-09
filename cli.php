@@ -1,16 +1,19 @@
 <?php
 
-require __DIR__ . '/src/Framework/Database.php';
+require './vendor/autoload.php';
+
 use Framework\Database;
+use App\Config\Paths;
+use Dotenv\Dotenv;
 
-$driver = 'mysql';
-$config = [
-    'host' => 'localhost',
-    'port' => 3306,
-    'dbname' => 'phpiggy'
-];
+$dotenv = Dotenv::createImmutable(Paths::ROOT);
+$dotenv->load();
 
-$db = new Database($driver, $config);
+$db = new Database($_ENV['DB_DRIVER'], [
+    'host' => $_ENV['DB_HOST'],
+    'port' => $_ENV['DB_PORT'],
+    'dbname' => $_ENV['DB_NAME']
+]);
 
 $sqlFile = file_get_contents("./database.sql");
 
