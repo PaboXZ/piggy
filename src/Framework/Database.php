@@ -31,7 +31,9 @@ class Database {
         
         try
         {
-            $this->connection = new PDO($dsn, $username, $password);
+            $this->connection = new PDO($dsn, $username, $password,[
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+            ]);
         }
         catch(PDOException $e){
             die("Unable to connect to DB");
@@ -48,5 +50,13 @@ class Database {
 
     public function count(){
         return $this->statement->fetchColumn();
+    }
+
+    public function find(int $mode = PDO::FETCH_DEFAULT){
+        return $this->statement->fetch($mode);
+    }
+
+    public function id(){
+        return $this->connection->lastInsertId();
     }
 }

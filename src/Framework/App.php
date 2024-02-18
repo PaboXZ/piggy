@@ -19,11 +19,11 @@ class App {
         }
     }
 
-    public function get(string $path, array $controller) {
-        $this->router->add('GET', $path, $controller);
+    public function get(string $path, array $controller, array $middlewares = []) {
+        return $this->router->add('GET', $path, $controller, $middlewares);
     }
-    public function post(string $path, array $controller){
-        $this->router->add('POST', $path, $controller);
+    public function post(string $path, array $controller, array $middlewares = []){
+        return $this->router->add('POST', $path, $controller, $middlewares);
     }
 
     public function status() {

@@ -32,14 +32,28 @@ class UserService {
             'country' => $formData['country'],
             'social' => $formData['socialMediaURL']
         ]);
+
+        session_regenerate_id();
+
+        $_SESSION['user'] = $this->database->id();
     }
 
     public function verifyUser(string $password, string $email){
-        $db = $this->database->query("SELECT password FROM users WHERE email = :email", ['email' => $email]);
+        $db = $this->database->query("SELECT * FROM users WHERE email = :email", ['email' => $email]);
 
-        $passwordHash = $db->count();
+        $userRow = $db->find();
 
-        if(!$passwordHash || !password_verify($password, $passwordHash))
-            throw new ValidationException(['password' => ["Invalid credentials"]]);
+        if(!$userRow || !password_verify($password, $userRow['password']))
+            throw new ValidationException(['password' => ['Invalid credentials']]);
+
+        session_regenerate_id();
+
+        $_SESSION['user'] = $userRow['id'];
+
+    }
+
+    public function logout(){
+        unset($_SESSION['user']);
+        session_regenerate_id();
     }
 }

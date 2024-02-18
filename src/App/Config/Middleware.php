@@ -9,10 +9,14 @@ use App\Middleware\{
     FlashMiddleware,
     SessionMiddleware,
     TemplateDataMiddleware,
-    ValidationExceptionMiddleware
+    ValidationExceptionMiddleware,
+    CSRFTokenMiddleware,
+    CSRFGuardMiddleware
 };
 
 function registerMiddleware(App $app){
+    $app->addMiddleware(CSRFGuardMiddleware::class);
+    $app->addMiddleware(CSRFTokenMiddleware::class);
     $app->addMiddleware(TemplateDataMiddleware::class);
     $app->addMiddleware(ValidationExceptionMiddleware::class);
     $app->addMiddleware(FlashMiddleware::class);
