@@ -25,6 +25,9 @@ class App {
     public function post(string $path, array $controller, array $middlewares = []){
         return $this->router->add('POST', $path, $controller, $middlewares);
     }
+    public function delete(string $path, array $controller, array $middlewares = []){
+        return $this->router->add('DELETE', $path, $controller, $middlewares);
+    }
 
     public function status() {
         echo "Running";
