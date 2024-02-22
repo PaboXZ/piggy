@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Config;
 
 use Framework\App;
-use App\Controllers\{HomeController, AboutController, AuthController, TransactionController};
+use App\Controllers\{HomeController, AboutController, AuthController, ReceiptController, TransactionController};
 use App\Middleware\{AuthRequiredMiddleware, GuestOnlyMiddleware};
 
 function registerRoutes(App $app) {
@@ -23,5 +23,11 @@ function registerRoutes(App $app) {
     $app->get('/transaction/{transaction}', [TransactionController::class ,'editView'], [AuthRequiredMiddleware::class]);
     $app->post('/transaction/{transaction}', [TransactionController::class ,'edit'], [AuthRequiredMiddleware::class]);
     $app->delete('/transaction/{transaction}', [TransactionController::class ,'delete'], [AuthRequiredMiddleware::class]);
+
+    $app->get('/transaction/{transaction}/receipt', [ReceiptController::class ,'uploadView'], [AuthRequiredMiddleware::class]);
+    $app->post('/transaction/{transaction}/receipt', [ReceiptController::class ,'upload'], [AuthRequiredMiddleware::class]);
+
+    $app->get('/transaction/{transaction}/receipt/{receipt}', [ReceiptController::class ,'download'], [AuthRequiredMiddleware::class]);
+    $app->delete('/transaction/{transaction}/receipt/{receipt}', [ReceiptController::class ,'delete'], [AuthRequiredMiddleware::class]);
 
 }

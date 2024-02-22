@@ -50,7 +50,7 @@ class TransactionService {
     public function getUserTransactions(int $length, int $offset){
         $searchParam = addcslashes($_GET['s'] ?? '', '%_');
 
-        return $this->db->query(
+        $transactions = $this->db->query(
             "SELECT *, DATE_FORMAT(date, '%Y-%m-%d') AS formatted_date FROM transactions WHERE user_id = :userID AND description LIKE :searchParam
             LIMIT {$length} OFFSET {$offset}",
             [
@@ -58,6 +58,16 @@ class TransactionService {
                 'searchParam' => "%{$searchParam}%"
             ]
         )->findAll();
+
+        $transactions = array_map(function(array $transaction){
+            $transaction['receipts'] = $this->db->query("SELECT * FROM receipts WHERE transaction_id = :transactionID",
+            ['transactionID' => $transaction['id']])->findAll();
+
+            return $transaction;
+        },
+        $transactions);
+
+        return $transactions;
     }
 
     public function countUserTransactions(){
